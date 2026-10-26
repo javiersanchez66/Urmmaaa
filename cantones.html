@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantones | Urma – El Oro</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .cantones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.6rem;
+        }
+        .canton-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(13,59,102,0.08);
+            border: 1px solid #e8eef4;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            text-align: left;
+        }
+        .canton-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(13,59,102,0.14);
+        }
+        .canton-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .canton-card .card-body {
+            padding: 1.2rem 1.3rem 1.4rem;
+        }
+        .canton-card h3 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .canton-card .cabecera {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+        }
+        .canton-card .resumen-corto {
+            font-size: 0.92rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        .canton-card .info-extra {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease;
+        }
+        .canton-card.abierto .info-extra {
+            max-height: 320px;
+            margin-top: 0.9rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid #e0e8f0;
+        }
+        .canton-card.abierto {
+            border-color: var(--primary);
+        }
+        .canton-card .info-extra p {
+            font-size: 0.93rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .zona-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            margin-bottom: 0.5rem;
+        }
+        .zona-tag.costa { background: #e3f2fd; color: #1565c0; }
+        .zona-tag.altura { background: #e8f5e9; color: #2e7d32; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>Urma <span>– El Oro</span></h1>
+            <p data-i18n="subtitulo-cantones">Los 14 cantones de la provincia</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" data-i18n="nav-inicio">Inicio</a></li>
+            <li><a href="problemas.html" data-i18n="nav-problemas">Problemas</a></li>
+            <li><a href="consejos.html" data-i18n="nav-consejos">Consejos</a></li>
+            <li><a href="cantones.html" class="activo" data-i18n="nav-cantones">Cantones</a></li>
+            <li><a href="paquetes.html" data-i18n="nav-paquetes">Paquetes</a></li>
+            <li class="idioma-switch">
+                <button class="btn-idioma activo" data-lang="es" onclick="cambiarIdioma('es')">ES</button>
+                <button class="btn-idioma" data-lang="en" onclick="cambiarIdioma('en')">EN</button>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="container">
+
+        <section>
+            <h2 data-i18n="cantones-titulo">Cantones de El Oro</h2>
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&h=500&fit=crop" 
+                 alt="Vista de Zaruma" 
+                 class="imagen-principal imagen-zaruma">
+            <p class="intro" data-i18n="cantones-intro">
+                Explora los 14 cantones de la provincia. Haz clic en cada tarjeta para leer más detalles. 
+                Puedes filtrar por zona:
+            </p>
+
+            <div class="filtros">
+                <button class="filtro-btn activo" onclick="filtrar('todos')" data-i18n="filtro-todos">Todos</button>
+                <button class="filtro-btn" onclick="filtrar('costa')" data-i18n="filtro-costa">Zona costera</button>
+                <button class="filtro-btn" onclick="filtrar('altura')" data-i18n="filtro-altura">Zona alta</button>
+            </div>
+
+            <div class="cantones-grid" id="lista-cantones">
+
+                <!-- MACHALA -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Machala">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>Machala</h3>
+                        <p class="cabecera" data-i18n="cabecera-capital">Capital provincial</p>
+                        <p class="resumen-corto" data-i18n="resumen-machala">La capital bananera del mundo y el corazón urbano de El Oro.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-machala">Machala es la capital de la provincia y el principal centro comercial y portuario. Desde aquí se exporta gran parte del banano ecuatoriano. Puerto Bolívar, su puerto, ofrece paseos y vistas al mar. Es una ciudad dinámica, con parques, monumentos y buena oferta de hoteles y restaurantes. Ideal como punto de partida para explorar el resto de la provincia.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASAJE -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Pasaje">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>Pasaje</h3>
+                        <p class="cabecera">Pasaje</p>
+                        <p class="resumen-corto" data-i18n="resumen-pasaje">Cantón agrícola y de paso entre la costa y la sierra orense.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-pasaje">Pasaje es un importante centro agrícola conocido por sus cultivos de banano, cacao y arroz. Su ubicación estratégica lo convierte en punto de conexión entre Machala y los cantones de la zona alta. Ofrece un ambiente más tranquilo que la capital y es ideal para quienes buscan conocer la vida rural de la provincia.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SANTA ROSA -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Santa Rosa">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>Santa Rosa</h3>
+                        <p class="cabecera">Santa Rosa</p>
+                        <p class="resumen-corto" data-i18n="resumen-santa-rosa">Uno de los cantones más grandes, con aeropuerto y conexión fronteriza.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-santa-rosa">Santa Rosa destaca por su extensión y diversidad. Cuenta con aeropuerto y es puerta de entrada hacia la frontera con Perú. Combina zonas de valle y cercanía a la costa. Es un cantón con fuerte actividad comercial y agrícola, perfecto para quienes viajan por tierra o buscan conexiones hacia el sur del país.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HUAQUILLAS -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Huaquillas">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>Huaquillas</h3>
+                        <p class="cabecera">Huaquillas</p>
+                        <p class="resumen-corto" data-i18n="resumen-huaquillas">Ciudad fronteriza vibrante con intenso comercio binacional.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-huaquillas">Huaquillas es la principal ciudad fronteriza de El Oro con Perú. Su mercado y actividad comercial son muy dinámicos. Es punto de paso frecuente de viajeros y comerciantes. Aunque conviene tomar precauciones de seguridad, ofrece una experiencia única de intercambio cultural y comercial entre ambos países.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EL GUABO -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="El Guabo">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>El Guabo</h3>
+                        <p class="cabecera">El Guabo</p>
+                        <p class="resumen-corto" data-i18n="resumen-el-guabo">Hogar de la playa de Bajo Alto y paisajes costeros.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-el-guabo">El Guabo es conocido por la playa de Bajo Alto, un destino de sol y mar que en el pasado atrajo a muchos visitantes. También cuenta con zonas de manglar y actividad pesquera. Es un cantón costero con potencial turístico, ideal para quienes buscan playas menos masificadas (siempre verificando las condiciones de seguridad actuales).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ARENILLAS -->
+                <div class="canton-card" data-zona="costa" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Arenillas">
+                    <div class="card-body">
+                        <span class="zona-tag costa" data-i18n="tag-costa">Zona costera</span>
+                        <h3>Arenillas</h3>
+                        <p class="cabecera">Arenillas</p>
+                        <p class="resumen-corto" data-i18n="resumen-arenillas">Cantón agrícola cercano a la frontera, de paso y producción.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-arenillas">Arenillas se caracteriza por su producción agrícola y su ubicación cercana a la frontera. Es un cantón de paso importante y ofrece un ambiente más rural. Quienes viajan hacia el sur o hacia Perú suelen atravesarlo. Ideal para conocer la vida del campo orense.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIÑAS -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Piñas">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Piñas</h3>
+                        <p class="cabecera">Piñas</p>
+                        <p class="resumen-corto" data-i18n="resumen-pinas">Conocida como el “Orquidario del Ecuador” por su riqueza floral.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-pinas">Piñas es famosa por sus orquídeas y su clima agradable de altura. Ofrece paisajes montañosos, senderos y una atmósfera tranquila. Es uno de los destinos preferidos de la zona alta por su seguridad percibida y su oferta de turismo de naturaleza y cultura. Perfecta para quienes buscan paz y contacto con la naturaleza.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ZARUMA -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Zaruma">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Zaruma</h3>
+                        <p class="cabecera">Zaruma</p>
+                        <p class="resumen-corto" data-i18n="resumen-zaruma">Ciudad histórica, minera y uno de los Pueblos Mágicos de Ecuador.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-zaruma">Zaruma es una de las joyas de El Oro. Su arquitectura colonial, calles empedradas, historia minera del oro y título de Pueblo Mágico la convierten en un destino cultural imprescindible. Ideal para caminar, conocer su patrimonio, degustar café local y disfrutar de vistas espectaculares de la sierra. Muy recomendada por su ambiente seguro y acogedor.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PORTOVELO -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Portovelo">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Portovelo</h3>
+                        <p class="cabecera">Portovelo</p>
+                        <p class="resumen-corto" data-i18n="resumen-portovelo">Histórica ciudad minera junto a Zaruma, llena de patrimonio.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-portovelo">Portovelo comparte con Zaruma una rica historia minera. Aquí se pueden visitar restos de la actividad aurífera, museos y disfrutar de un ambiente de altura con clima fresco. Es un complemento perfecto a la visita de Zaruma y atrae a quienes buscan turismo cultural e histórico en un entorno montañoso.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ATAHUALPA -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Atahualpa">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Atahualpa</h3>
+                        <p class="cabecera">Paccha</p>
+                        <p class="resumen-corto" data-i18n="resumen-atahualpa">Paisajes montañosos y ambiente rural tranquilo.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-atahualpa">Atahualpa (cabecera en Paccha) ofrece hermosos paisajes de montaña y un ritmo de vida pausado. Es ideal para el turismo rural, caminatas y para quienes desean alejarse del bullicio. Su entorno natural y la hospitalidad de su gente lo convierten en un destino auténtico de la zona alta orense.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BALSAS -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Balsas">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Balsas</h3>
+                        <p class="cabecera">Balsas</p>
+                        <p class="resumen-corto" data-i18n="resumen-balsas">Pequeño cantón de altura, rural y sereno.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-balsas">Balsas es uno de los cantones más pequeños y tranquilos de la provincia. Su ambiente rural, clima de altura y cercanía a otros destinos de la zona alta lo hacen atractivo para quienes buscan paz, naturaleza y una experiencia auténtica lejos de las multitudes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MARCABELÍ -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Marcabelí">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Marcabelí</h3>
+                        <p class="cabecera">Marcabelí</p>
+                        <p class="resumen-corto" data-i18n="resumen-marcabeli">Cantón agrícola de altura con ambiente sosegado.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-marcabeli">Marcabelí se caracteriza por su economía agrícola y su entorno montañoso. Es un destino poco masificado, ideal para el turismo de naturaleza y para conocer la vida cotidiana de la sierra orense. Ofrece tranquilidad y paisajes auténticos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHILLA -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Chilla">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Chilla</h3>
+                        <p class="cabecera">Chilla</p>
+                        <p class="resumen-corto" data-i18n="resumen-chilla">Uno de los cantones menos poblados, montañoso y rural.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-chilla">Chilla es un cantón pequeño y poco conocido, con paisajes montañosos y un fuerte carácter rural. Perfecto para viajeros que buscan destinos fuera de las rutas tradicionales, contacto con la naturaleza y la autenticidad de las comunidades de altura de El Oro.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAS LAJAS -->
+                <div class="canton-card" data-zona="altura" onclick="mostrarInfo(this)">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Las Lajas">
+                    <div class="card-body">
+                        <span class="zona-tag altura" data-i18n="tag-altura">Zona alta</span>
+                        <h3>Las Lajas</h3>
+                        <p class="cabecera">La Victoria</p>
+                        <p class="resumen-corto" data-i18n="resumen-las-lajas">Cantón pequeño de la zona alta con ambiente rural.</p>
+                        <div class="info-extra">
+                            <p data-i18n="info-las-lajas">Las Lajas (cabecera en La Victoria) es un cantón tranquilo de la zona alta. Ofrece un entorno rural, aire puro y la posibilidad de conocer la vida de las comunidades montañosas de El Oro. Ideal para quienes valoran la calma y los paisajes naturales.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="marca">Urma</div>
+        <p data-i18n="footer1">Sitio informativo sobre la Provincia de El Oro – Ecuador</p>
+        <p><a href="index.html" data-i18n="volver-inicio">Volver al inicio</a></p>
+    </footer>
+
+    <script src="idioma.js"></script>
+    <script>
+        function filtrar(zona) {
+            document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('activo'));
+            event.target.classList.add('activo');
+            document.querySelectorAll('.canton-card').forEach(card => {
+                card.style.display = (zona === 'todos' || card.dataset.zona === zona) ? 'block' : 'none';
+            });
+        }
+        function mostrarInfo(card) {
+            document.querySelectorAll('.canton-card').forEach(c => { if (c !== card) c.classList.remove('abierto'); });
+            card.classList.toggle('abierto');
+        }
+    </script>
+</body>
+</html>

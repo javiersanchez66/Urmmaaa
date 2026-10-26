@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Turísticos | Urma – El Oro</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .triptico {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .panel {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(13,59,102,0.1);
+            border: 1px solid #e8eef4;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.35s ease;
+        }
+        .panel:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(13,59,102,0.15);
+        }
+        .panel-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .panel-header {
+            padding: 1.4rem 1.3rem 1rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        .panel.cultura .panel-header { background: linear-gradient(160deg, #1a5276, #2980b9); }
+        .panel.aventura .panel-header { background: linear-gradient(160deg, #1e8449, #27ae60); }
+        .panel.naturaleza .panel-header { background: linear-gradient(160deg, #b8860b, #c9a227); color: #1a1a1a; }
+
+        .panel-header .tema {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 0.22rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .panel.naturaleza .panel-header .tema { background: rgba(0,0,0,0.12); }
+
+        .panel-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 0.3rem 0;
+        }
+        .panel-header .precio {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin: 0.4rem 0 0.15rem;
+        }
+        .panel-header .precio span { font-size: 0.9rem; font-weight: 400; opacity: 0.9; }
+        .panel-header .duracion { font-size: 0.9rem; opacity: 0.9; }
+
+        .panel-body {
+            padding: 1.2rem 1.4rem;
+            flex-grow: 1;
+        }
+        .panel-body ul { list-style: none; margin: 0; padding: 0; }
+        .panel-body li {
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #444;
+            font-size: 0.92rem;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .panel-body li:last-child { border-bottom: none; }
+        .panel-body li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+        .panel.cultura .panel-body li::before { color: #2980b9; }
+        .panel.aventura .panel-body li::before { color: #27ae60; }
+        .panel.naturaleza .panel-body li::before { color: #c9a227; }
+
+        .panel-footer {
+            padding: 0.8rem 1.3rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .panel-footer .btn {
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1a5276 !important;
+            color: #1a5276;
+        }
+        .panel.aventura .btn-outline { border-color: #1e8449 !important; color: #1e8449; }
+        .panel.naturaleza .btn-outline { border-color: #b8860b !important; color: #b8860b; }
+
+        .badge-popular {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.28rem 0.65rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Detalle expandible */
+        .detalle-extra {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease;
+            background: #f8fafc;
+        }
+        .detalle-extra.abierto {
+            max-height: 500px;
+        }
+        .detalle-extra-inner {
+            padding: 1.2rem 1.4rem 1.4rem;
+            border-top: 1px solid #e8eef4;
+        }
+        .detalle-extra h4 {
+            color: #1a5276;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+        }
+        .detalle-extra p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        .detalle-extra ul {
+            margin-left: 1.2rem;
+            font-size: 0.88rem;
+            color: #555;
+        }
+        .detalle-extra li { margin-bottom: 0.35rem; }
+
+        /* Botón descarga tríptico */
+        .descarga-box {
+            background: linear-gradient(135deg, #0d3b66, #1a5276);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align excenter;
+            margin-top: 2.5rem;
+            box-shadow: 0 12px 35px rgba(13,59,102,0.2);
+        }
+        .descarga-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #e8c547;
+        }
+        .descarga-box p {
+            opacity: 0.9;
+            margin-bottom: 1.3rem;
+            font-size: 0.98rem;
+        }
+        .descarga-box .btn-descarga {
+            display: inline-block;
+            background: linear-gradient(135deg, #b8860b, #c9a227);
+            color: #1a1a1a;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .descarga-box .btn-descarga:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(201,162,39,0.4);
+        }
+
+        @media (max-width: 900px) {
+            .triptico { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>Urma <span>– El Oro</span></h1>
+            <p data-i18n="subtitulo-paquetes">Paquetes turísticos pensados para ti</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" data-i18n="nav-inicio">Inicio</a></li>
+            <li><a href="problemas.html" data-i18n="nav-problemas">Problemas</a></li>
+            <li><a href="consejos.html" data-i18n="nav-consejos">Consejos</a></li>
+            <li><a href="cantones.html" data-i18n="nav-cantones">Cantones</a></li>
+            <li><a href="paquetes.html" class="activo" data-i18n="nav-paquetes">Paquetes</a></li>
+            <li class="idioma-switch">
+                <button class="btn-idioma activo" data-lang="es" onclick="cambiarIdioma('es')">ES</button>
+                <button class="btn-idioma" data-lang="en" onclick="cambiarIdioma('en')">EN</button>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="container">
+
+        <section>
+            <h2 data-i18n="paquetes-titulo">Nuestros Paquetes Turísticos</h2>
+            <p class="intro" data-i18n="paquetes-intro">
+                Tres experiencias únicas: Cultura, Aventura y Naturaleza. 
+                Haz clic en “Ver más detalles” para ampliar la información de cada paquete.
+            </p>
+
+            <div class="triptico">
+
+                <!-- CULTURA -->
+                <article class="panel cultura">
+                    <img class="panel-img" src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop" alt="Cultura - arquitectura colonial">
+                    <div class="panel-header">
+                        <span class="tema" data-i18n="etiqueta-cultura">Cultura</span>
+                        <h3 data-i18n="paq1-nombre">Ruta Cultural Orense</h3>
+                        <div class="precio">$95 <span data-i18n="por-persona">/ persona</span></div>
+                        <p class="duracion" data-i18n="paq1-duracion">2 días / 1 noche</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li data-i18n="paq1-i1">Visita a Zaruma (Pueblo Mágico)</li>
+                            <li data-i18n="paq1-i2">Portovelo y su museo minero</li>
+                            <li data-i18n="paq1-i3">Arquitectura colonial y plazas</li>
+                            <li data-i18n="paq1-i4">Degustación de comida típica</li>
+                            <li data-i18n="paq1-i5">Café de altura y tradiciones</li>
+                            <li data-i18n="paq1-i6">Hospedaje en hostería colonial</li>
+                            <li data-i18n="paq1-i7">Guía cultural local</li>
+                        </ul>
+                    </div>
+                    <div class="detalle-extra" id="detalle-cultura">
+                        <div class="detalle-extra-inner">
+                            <h4 data-i18n="detalle1-titulo">¿Qué incluye esta experiencia?</h4>
+                            <p data-i18n="detalle1-texto">Recorre la historia viva de El Oro. Zaruma, declarada Pueblo Mágico, te recibe con calles empedradas, balcones coloniales y la memoria del oro. En Portovelo conocerás el legado minero y degustarás el auténtico café de altura. Ideal para amantes de la historia, la arquitectura y la gastronomía local.</p>
+                            <ul>
+                                <li data-i18n="detalle1-i1">Itinerario día 1: Llegada a Zaruma + tour histórico</li>
+                                <li data-i18n="detalle1-i2">Itinerario día 2: Portovelo + degustación + retorno</li>
+                                <li data-i18n="detalle1-i3">Grupo reducido (máx. 12 personas)</li>
+                                <li data-i18n="detalle1-i4">Recomendaciones de seguridad incluidas</li>
+                            </ul>
+                            <p style="margin-top:1rem;">
+                                <a href="triptico-cultura.pdf" download style="color:#1a5276; font-weight:600; font-size:0.9rem;">⬇ Descargar tríptico de Cultura (PDF)</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-outline" onclick="toggleDetalle('detalle-cultura', this)" data-i18n="btn-ver-mas">Ver más detalles</button>
+                        <a href="#" class="btn btn-azul" data-i18n="btn-reservar">Consultar disponibilidad</a>
+                    </div>
+                </article>
+
+                <!-- AVENTURA -->
+                <article class="panel aventura">
+                    <img class="panel-img" src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop" alt="Aventura - senderismo">
+                    <div class="panel-header">
+                        <span class="badge-popular" data-i18n="mas-popular">Más popular</span>
+                        <span class="tema" data-i18n="etiqueta-aventura">Aventura</span>
+                        <h3 data-i18n="paq2-nombre">Aventura Costa & Sierra</h3>
+                        <div class="precio">$130 <span data-i18n="por-persona">/ persona</span></div>
+                        <p class="duracion" data-i18n="paq2-duracion">2 días / 1 noche</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li data-i18n="paq2-i1">Lancha por islas de Jambelí</li>
+                            <li data-i18n="paq2-i2">Senderismo en zona de Piñas</li>
+                            <li data-i18n="paq2-i3">Miradores y cascadas</li>
+                            <li data-i18n="paq2-i4">Actividades al aire libre</li>
+                            <li data-i18n="paq2-i5">Hospedaje cómodo</li>
+                            <li data-i18n="paq2-i6">Almuerzos y desayuno</li>
+                            <li data-i18n="paq2-i7">Guía de aventura + equipo</li>
+                        </ul>
+                    </div>
+                    <div class="detalle-extra" id="detalle-aventura">
+                        <div class="detalle-extra-inner">
+                            <h4 data-i18n="detalle2-titulo">¿Qué incluye esta experiencia?</h4>
+                            <p data-i18n="detalle2-texto">Combina el mar y la montaña en un solo viaje. Navega entre las islas de Jambelí, camina por senderos de Piñas y descubre miradores con vistas impresionantes. Pensado para quienes buscan movimiento, paisajes y adrenalina suave. Nivel de dificultad: moderado.</p>
+                            <ul>
+                                <li data-i18n="detalle2-i1">Día 1: Costa – lancha y playa</li>
+                                <li data-i18n="detalle2-i2">Día 2: Sierra – senderismo y cascadas</li>
+                                <li data-i18n="detalle2-i3">Equipo básico de senderismo incluido</li>
+                                <li data-i18n="detalle2-i4">Seguro de actividades y recomendaciones de seguridad</li>
+                            </ul>
+                            <p style="margin-top:1rem;">
+                                <a href="triptico-aventura.pdf" download style="color:#1e8449; font-weight:600; font-size:0.9rem;">⬇ Descargar tríptico de Aventura (PDF)</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-outline" onclick="toggleDetalle('detalle-aventura', this)" data-i18n="btn-ver-mas">Ver más detalles</button>
+                        <a href="#" class="btn btn-verde" data-i18n="btn-reservar">Consultar disponibilidad</a>
+                    </div>
+                </article>
+
+                <!-- NATURALEZA -->
+                <article class="panel naturaleza">
+                    <img class="panel-img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop" alt="Naturaleza - bosque">
+                    <div class="panel-header">
+                        <span class="tema" data-i18n="etiqueta-naturaleza">Naturaleza</span>
+                        <h3 data-i18n="paq3-nombre">Naturaleza Pura de El Oro</h3>
+                        <div class="precio">$185 <span data-i18n="por-persona">/ persona</span></div>
+                        <p class="duracion" data-i18n="paq3-duracion">3 días / 2 noches</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li data-i18n="paq3-i1">Bosque Petrificado de Puyango</li>
+                            <li data-i18n="paq3-i2">Observación de aves y flora</li>
+                            <li data-i18n="paq3-i3">Playas y manglares de Jambelí</li>
+                            <li data-i18n="paq3-i4">Senderos ecológicos de altura</li>
+                            <li data-i18n="paq3-i5">Hospedaje ecológico</li>
+                            <li data-i18n="paq3-i6">Todas las comidas incluidas</li>
+                            <li data-i18n="paq3-i7">Guía naturalista + transporte</li>
+                        </ul>
+                    </div>
+                    <div class="detalle-extra" id="detalle-naturaleza">
+                        <div class="detalle-extra-inner">
+                            <h4 data-i18n="detalle3-titulo">¿Qué incluye esta experiencia?</h4>
+                            <p data-i18n="detalle3-texto">Sumérgete en la naturaleza más pura de la provincia. Desde el impresionante Bosque Petrificado de Puyango (fósiles de más de 100 millones de años) hasta los manglares y playas de Jambelí, pasando por senderos de altura. Ideal para amantes de la biodiversidad y la fotografía de naturaleza.</p>
+                            <ul>
+                                <li data-i18n="detalle3-i1">Día 1: Puyango y entorno natural</li>
+                                <li data-i18n="detalle3-i2">Día 2: Zona alta – senderos y aves</li>
+                                <li data-i18n="detalle3-i3">Día 3: Manglares y playas de Jambelí</li>
+                                <li data-i18n="detalle3-i4">Guía naturalista especializado y transporte privado</li>
+                            </ul>
+                            <p style="margin-top:1rem;">
+                                <a href="triptico-naturaleza.pdf" download style="color:#b8860b; font-weight:600; font-size:0.9rem;">⬇ Descargar tríptico de Naturaleza (PDF)</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-outline" onclick="toggleDetalle('detalle-naturaleza', this)" data-i18n="btn-ver-mas">Ver más detalles</button>
+                        <a href="#" class="btn btn-oro" data-i18n="btn-reservar">Consultar disponibilidad</a>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- DESCARGAS DE TRÍPTICOS INDIVIDUALES -->
+            <div class="descarga-box">
+                <h3 data-i18n="descarga-titulo">Descarga los Trípticos</h3>
+                <p data-i18n="descarga-texto">Cada experiencia tiene su propio tríptico elegante con toda la información. Elige el que más te interese o descarga los tres.</p>
+                <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:1.2rem;">
+                    <a href="triptico-cultura.pdf" download class="btn-descarga" style="background:linear-gradient(135deg,#1a5276,#2980b9); color:white;">
+                        🏛 Tríptico Cultura
+                    </a>
+                    <a href="triptico-aventura.pdf" download class="btn-descarga" style="background:linear-gradient(135deg,#1e8449,#27ae60); color:white;">
+                        🏞 Tríptico Aventura
+                    </a>
+                    <a href="triptico-naturaleza.pdf" download class="btn-descarga" style="background:linear-gradient(135deg,#b8860b,#c9a227); color:#1a1a1a;">
+                        🌿 Tríptico Naturaleza
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="aviso">
+            <h3 data-i18n="nota-paquetes-titulo">Nota importante</h3>
+            <p data-i18n="nota-paquetes-texto">
+                Los precios son referenciales y pueden variar según temporada y número de personas. 
+                Antes de reservar te damos información actualizada sobre seguridad en las zonas a visitar.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="marca">Urma</div>
+        <p data-i18n="footer1">Sitio informativo sobre la Provincia de El Oro – Ecuador</p>
+        <p><a href="index.html" data-i18n="volver-inicio">Volver al inicio</a></p>
+    </footer>
+
+    <script src="idioma.js"></script>
+    <script>
+        function toggleDetalle(id, btn) {
+            const el = document.getElementById(id);
+            const abierto = el.classList.toggle('abierto');
+            if (abierto) {
+                btn.textContent = (typeof idiomaActual !== 'undefined' && idiomaActual === 'en') ? 'Hide details' : 'Ocultar detalles';
+            } else {
+                btn.textContent = (typeof idiomaActual !== 'undefined' && idiomaActual === 'en') ? 'See more details' : 'Ver más detalles';
+            }
+        }
+    </script>
+</body>
+</html>
